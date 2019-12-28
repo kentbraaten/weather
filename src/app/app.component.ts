@@ -8,4 +8,5 @@ import { NoaaModule } from './noaa/noaa.module'
 })
 export class AppComponent {
   title = 'noaa-app';
+  public opened: boolean;
 }

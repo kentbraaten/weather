@@ -1292,13 +1292,6 @@ const locations =
                 id: "CITY:US060044"
             },
             {
-                mindate: "1893-01-01",
-               maxdate: "2019-11-18",
-                name: "Vallejo, CA US",
-                datacoverage: 1,
-                id: "CITY:US060045"
-            },
-            {
                 mindate: "1895-02-01",
                maxdate: "2019-11-18",
                 name: "Visalia, CA US",

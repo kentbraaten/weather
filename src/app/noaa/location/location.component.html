@@ -1,14 +1,19 @@
 <ng-template #rt let-r="result" let-t="term">
-     <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-  </ng-template>
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>
 
 <div>
+  <div>
+    <label>Country</label>
     <input class="form-control" [ngbTypeahead]=searchCountries 
     placement="bottom" [inputFormatter]="countryFormatter" [resultTemplate]="rt"
     (selectItem)="selectCountry($event)"/>
-
+  </div>
+  <div>
+    <label>City</label>
     <input class="form-control" [ngbTypeahead]=searchCities 
-    placement="bottom" [inputFormatter]="countryFormatter" [resultTemplate]="rt"
-    (selectItem)="selectLocation($event)"
-    />
+ placement="bottom" [inputFormatter]="countryFormatter" [resultTemplate]="rt"
+ (selectItem)="selectLocation($event)"
+ />
+  </div>
 </div>

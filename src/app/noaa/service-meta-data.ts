@@ -16,7 +16,6 @@ export var cityLocationsFunc = (limit: number) => {
 //https://www.ncdc.noaa.gov/cdo-web/api/v2/data?datatatypeid=TMAX, TMIN&limit=100&units=standard&startdate=2010-01-01&enddate=2018-01-01&locationid=CITY:US270013
 export var averageTempDataFunc = (locationId: string, startDate: string, endDate:string) => {
     const args = `datasetid=GSOY&datatypeid=TMAX&limit=1000&units=standard&startdate=${startDate}&enddate=${endDate}&locationid=${locationId}`
-    console.log(`${nooaBaseAddress}${dataEndpoint}?${args}`);
     return `${nooaBaseAddress}${dataEndpoint}?${args}`
 }
 

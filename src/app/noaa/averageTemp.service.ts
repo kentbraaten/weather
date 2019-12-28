@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, interval } from 'rxjs';
 import { AverageTempData, AverageTempServiceReturnValue, DateRange } from './noaa.types';
 import { averageTempDataFunc, requestHeader } from './service-meta-data';
-import {  map, distinct, mergeMap, toArray, take, concatMap } from 'rxjs/operators';
+import {  map, distinct, mergeMap, toArray, take, concatMap, filter } from 'rxjs/operators';
 
 const dateRanges = [
   {startDate: '1890-01-01', endDate: '1899-01-01'},
@@ -40,6 +40,7 @@ export class AverageTempService {
     return this.http.get<AverageTempServiceReturnValue>(averageTempDataFunc(location, startDate, endDate),requestHeader())
     .pipe(
         map(results => results.results),
+        filter(results => results && results.length > 0),
         mergeMap(l => l),
         distinct(at => at.date)
     );

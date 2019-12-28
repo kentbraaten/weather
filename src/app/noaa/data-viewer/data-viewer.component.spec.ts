@@ -4,6 +4,7 @@ import { DataViewerComponent } from './data-viewer.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducer } from '../state/noaa.reducer';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 describe('DataViewerComponent', () => {
   let component: DataViewerComponent;
@@ -16,6 +17,7 @@ describe('DataViewerComponent', () => {
         StoreModule.forRoot({}),
         StoreModule.forFeature("noaa",reducer),
         EffectsModule.forRoot([]),
+        GoogleChartsModule.forRoot()
       ]
     })
     .compileComponents();

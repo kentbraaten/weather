@@ -7,6 +7,9 @@ import { LocationsService } from './noaa/locations.service';
 import { MockLocationsService } from './noaa/mock-locations.service';
 import { AverageTempService } from './noaa/averageTemp.service';
 import { MockAverageTempService } from './noaa/mock-averageTemp.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { GoogleChartsModule } from 'angular-google-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -15,6 +18,9 @@ describe('AppComponent', () => {
         NoaaModule,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
+        GoogleChartsModule.forRoot(),
+        MatSidenavModule,
+        BrowserAnimationsModule
       ],
       declarations: [
         AppComponent

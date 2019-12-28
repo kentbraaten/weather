@@ -5,6 +5,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { LocationsService } from './noaa/locations.service';
 import { MockLocationsService } from './noaa/mock-locations.service';
+import { AverageTempService } from './noaa/averageTemp.service';
+import { MockAverageTempService } from './noaa/mock-averageTemp.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -18,7 +20,8 @@ describe('AppComponent', () => {
         AppComponent
       ],
     }).compileComponents();
-    TestBed.overrideProvider(LocationsService, {useValue: new MockLocationsService})
+    TestBed.overrideProvider(LocationsService, {useValue: new MockLocationsService});
+    TestBed.overrideProvider(AverageTempService, {useValue: new MockAverageTempService});
   }));
 
   it('should create the app', () => {

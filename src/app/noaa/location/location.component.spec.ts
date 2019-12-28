@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NoaaModule } from '../noaa.module';
+import { reducer } from '../state/noaa.reducer';
 
 describe('LocationComponent', () => {
   let component: LocationComponent;
@@ -15,6 +16,7 @@ describe('LocationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ],
       imports: [
+        StoreModule.forFeature("noaa",reducer),
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
         NgbModule,

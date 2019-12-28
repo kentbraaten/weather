@@ -10,9 +10,10 @@ import { reducer } from './state/noaa.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { NoaaEffects } from './state/noaa.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DataViewerComponent } from './data-viewer/data-viewer.component';
 
 @NgModule({
-  declarations: [LocationComponent],
+  declarations: [LocationComponent, DataViewerComponent],
   imports: [
     CommonModule,
     StoreModule.forFeature("noaa",reducer),
@@ -22,7 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [ {provide: LocationsService, useClass: LocationsService}, AverageTempService],
   exports: [
-    LocationComponent
+    LocationComponent,
+    DataViewerComponent
   ]
 })
-export class   NoaaModule { }
+export class NoaaModule { }

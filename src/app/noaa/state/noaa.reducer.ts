@@ -1,16 +1,18 @@
 import { NoaaActionTypes, NoaaActions } from './noaa.actions';
-import { Location } from '../noaa.types';
+import { Location, AverageTempData } from '../noaa.types';
 
 export interface NoaaState {
     locations: Location[],
+    averageTempData: AverageTempData[],
     countryCode: string,
     locationId: string
 }
 
 export const initialState: NoaaState = {
     locations: [],
+    averageTempData: [],
     countryCode: "",
-    locationId: null
+    locationId: ""
 }
 
 export function reducer(state = initialState, action : NoaaActions) {
@@ -31,6 +33,12 @@ export function reducer(state = initialState, action : NoaaActions) {
             return {
                 ...state,
                 locationId: action.payload
+            }
+        }
+        case NoaaActionTypes.LOAD_AVERAGE_TEMP_SUCCESS: {
+            return {
+                ...state,
+                averageTempData: action.payload
             }
         }
 

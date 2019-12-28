@@ -4,6 +4,7 @@ import {Location} from '../noaa.types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { distinct, map, filter, reduce, buffer, toArray, pluck } from 'rxjs/operators';
+import { SelectorContext } from '@angular/compiler';
 
 export interface State extends fromRoot.State {
     noaaData: fromNoaa.NoaaState;
@@ -16,6 +17,9 @@ export const getLocationsSelector = createSelector(getNoaaFeatureState,
 
 export const getCountrySelector = createSelector(getNoaaFeatureState,
     ns => ns.countryCode);
+
+export const locationIdSelector = createSelector(getNoaaFeatureState,
+    ns => ns.locationId);
 
 export const getCountriesList = (key: string, locations$: Observable<Location>): Observable<any> =>{
     const lowerKey = key.toLocaleLowerCase();

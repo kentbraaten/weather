@@ -11,6 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { NoaaEffects } from './state/noaa.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataViewerComponent } from './data-viewer/data-viewer.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [LocationComponent, DataViewerComponent],
@@ -18,6 +19,7 @@ import { DataViewerComponent } from './data-viewer/data-viewer.component';
     CommonModule,
     StoreModule.forFeature("noaa",reducer),
     EffectsModule.forFeature([NoaaEffects]),
+    GoogleChartsModule.forRoot(),
     NgbModule,
     FormsModule
   ],

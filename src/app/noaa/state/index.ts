@@ -24,6 +24,9 @@ export const locationIdSelector = createSelector(getNoaaFeatureState,
 export const averageTempSelector = createSelector(getNoaaFeatureState,
     ns => ns.averageTempData);
 
+export const averageTempDataAvailableSelector = createSelector(getNoaaFeatureState,
+    ns => ns.averageTempData && ns.averageTempData.length != 0);
+
 export const getCountriesList = (key: string, locations$: Observable<Location>): Observable<any> =>{
     const lowerKey = key.toLocaleLowerCase();
     const seed: string[] = [];

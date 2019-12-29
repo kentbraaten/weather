@@ -1,7 +1,16 @@
-<google-chart 
-  [type]="chartType"
-  [title]="chartName"
-  [data]="chartData"
-  [columnNames]="columnNames"
-  [options]="chartOptions">
-</google-chart>
+<div *ngIf="dataAvailable$ | async; else notShow">
+  <google-chart 
+    [type]="chartType"
+    [title]="chartName"
+    [data]="chartData"
+    [columnNames]="columnNames"
+    [options]="chartOptions">
+  </google-chart>
+</div>
+
+<ng-template #notShow>
+  <p>
+    Enter a location
+  </p>
+</ng-template>
+

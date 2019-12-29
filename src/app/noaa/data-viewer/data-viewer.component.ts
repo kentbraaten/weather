@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromNoaa from '../state/index';
 import * as noaaActions from '../state/noaa.actions';
-import { Subscription, of, from } from 'rxjs';
+import { Subscription, of, from, Observable } from 'rxjs';
 import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Component({
@@ -17,6 +17,7 @@ export class DataViewerComponent implements OnInit {
   private dataSubscription: Subscription;
   chartData = [];
   columnNames = [];
+  dataAvailable$: Observable<boolean>;
   chartType = "LineChart";
   chartName = "Average Temperture";
   chartOptions = {
@@ -35,6 +36,8 @@ export class DataViewerComponent implements OnInit {
           this.store.dispatch(new noaaActions.LoadAverageTempData(locId))
         }
       });
+
+      this.dataAvailable$ = this.store.select(fromNoaa.averageTempDataAvailableSelector);
       this.dataSubscription = this.store.select(fromNoaa.averageTempSelector)
   /*        .pipe(
             mergeMap(l => l),

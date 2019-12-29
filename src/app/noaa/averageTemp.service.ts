@@ -32,7 +32,6 @@ export class AverageTempService {
       take(dateRanges.length),
       map(idx => getDateRange(idx)),
       concatMap(range => this.getData(location, range.startDate, range.endDate)),
-      toArray()
     )
   }
 
@@ -43,7 +42,8 @@ export class AverageTempService {
         filter(results => results && results.length > 0),
         mergeMap(l => l),
         map(result => [result.date.slice(0,4), result.value]),
-        distinct(at => at[0])
+        distinct(at => at[0]),
+        toArray()
     );
   }
 }

@@ -38,10 +38,10 @@ export function reducer(state = initialState, action : NoaaActions) {
                 averageTempData: []
             }
         }
-        case NoaaActionTypes.LOAD_AVERAGE_TEMP_SUCCESS: {
+        case NoaaActionTypes.LOAD_AVERAGE_TEMP_PART: {
             return {
                 ...state,
-                averageTempData: action.payload
+                averageTempData: state.averageTempData.concat(action.payload)
             }
         }
 

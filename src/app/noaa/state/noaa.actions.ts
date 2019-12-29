@@ -43,7 +43,7 @@ export class LoadAverageTempData implements Action {
 
 export class LoadAverageTempSuccess implements Action {
     readonly type = NoaaActionTypes.LOAD_AVERAGE_TEMP_SUCCESS;
-    constructor(public payload: AverageTempData[]) {}
+    constructor(public payload:(string | number)[][]) {}
 }
 
 export class LoadAverageTempFailure implements Action {

@@ -34,69 +34,16 @@ const testActions = [
 ];
 
 const averageTempTestData = [
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00211448",
-        attributes: "0",
-        value: 54.1
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00214884",
-        attributes: "0",
-        value: 58.1
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00215838",
-        attributes: "0",
-        value: 55.3
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00218450",
-        attributes: "0",
-        value: 56.5
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USW00014922",
-        attributes: "0",
-        value: 55.1
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USW00094960",
-        attributes: "W",
-        value: 54.8
-    },
-    {
-        date: "2001-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00211448",
-        attributes: "0",
-        value: 55.3
-    },
-    {
-        date: "2001-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00218450",
-        attributes: "0",
-        value: 57.5
-    },
-    {
-        date: "2001-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USW00014922",
-        attributes: "0",
-        value: 56.2
-    },
+    ["2001", 54.1],
+    ["2002", 55.1],
+    ["2003", 60.1],
+    ["2004", 49.1],
+    ["2005", 53.1],
+    ["2006", 52.1],
+    ["2007", 55.1],
+    ["2008", 56.1],
+    ["2009", 55.1],
+    ["2010", 61.1],
     ];
 
 describe("LocationReducer", () => {
@@ -123,6 +70,6 @@ describe("LocationReducer", () => {
         const midState = reducer(initialState, selectLocation);
         const loadAverageTempData = new locationActions.LoadAverageTempSuccess(averageTempTestData);
         const newState = reducer(midState, loadAverageTempData);
-        expect(newState.averageTempData.length).toBe(9);
+        expect(newState.averageTempData.length).toBe(10);
     });
 });

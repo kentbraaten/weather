@@ -3,7 +3,7 @@ import { Location, AverageTempData } from '../noaa.types';
 
 export interface NoaaState {
     locations: Location[],
-    averageTempData: AverageTempData[],
+    averageTempData: (string | number)[][],
     countryCode: string,
     locationId: string
 }
@@ -26,13 +26,16 @@ export function reducer(state = initialState, action : NoaaActions) {
         case NoaaActionTypes.SELECT_COUNTRY: {
             return {
                 ...state,
-                countryCode: action.payload
+                countryCode: action.payload,
+                locationId: "",
+                averageTempData: []
             }
         }
         case NoaaActionTypes.SELECT_LOCATION: {
             return {
                 ...state,
-                locationId: action.payload
+                locationId: action.payload,
+                averageTempData: []
             }
         }
         case NoaaActionTypes.LOAD_AVERAGE_TEMP_SUCCESS: {

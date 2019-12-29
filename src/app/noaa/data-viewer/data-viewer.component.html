@@ -2,7 +2,7 @@
   <google-chart 
     [type]="chartType"
     [title]="chartName"
-    [data]="chartData"
+    [data]="averageTempData$ | async"
     [columnNames]="columnNames"
     [options]="chartOptions">
   </google-chart>

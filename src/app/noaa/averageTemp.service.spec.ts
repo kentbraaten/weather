@@ -43,7 +43,7 @@ describe('AverageTempService.getData()', () => {
         () => {
           done();
           expect(data.length).toBe(10);
-          expect(data.filter(at => at.date.startsWith("2001-01-01")).length).toBe(1);
+          expect(data.filter(at => at[0].startsWith("2001")).length).toBe(1);
         });
   });
 

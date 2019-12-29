@@ -14,8 +14,7 @@ export class DataViewerComponent implements OnInit {
 
   constructor(private store: Store<fromNoaa.State>) { }
   private locationSubscription: Subscription;
-  private dataSubscription: Subscription;
-  chartData = [];
+  private averageTempData$: Observable<any>;
   columnNames = [];
   dataAvailable$: Observable<boolean>;
   chartType = "LineChart";
@@ -38,28 +37,12 @@ export class DataViewerComponent implements OnInit {
       });
 
       this.dataAvailable$ = this.store.select(fromNoaa.averageTempDataAvailableSelector);
-      this.dataSubscription = this.store.select(fromNoaa.averageTempSelector)
-  /*        .pipe(
-            mergeMap(l => l),
-            map(avt => [avt.date.slice(0,4),avt.value]),
-            toArray()
-          )*/
-          .subscribe(
-            l => {
-              from(l).pipe(
-                map(avt => [avt.date.slice(0,4),avt.value]),
-                toArray()
-              ).subscribe(
-                l => this.chartData = l
-              )
-            }
-          );
+      this.averageTempData$ = this.store.select(fromNoaa.averageTempSelector);
       this.columnNames = this.getChartColumnNames();
   }
 
   ngOnDistroy() {
     this.locationSubscription.unsubscribe();
-    this.dataSubscription.unsubscribe();
   }
 
   private getChartColumnNames() {

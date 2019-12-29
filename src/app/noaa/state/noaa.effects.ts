@@ -24,7 +24,7 @@ export class NoaaEffects {
     loadAverageTempData$ = this.actions$.pipe(
         ofType(noaaActions.NoaaActionTypes.LOAD_AVERAGE_TEMP_DATA),
         mergeMap((action: noaaActions.LoadAverageTempData) => this.averageTempService.getChartData(action.payload).pipe(
-            map((chartData: AverageTempData[]) => new noaaActions.LoadAverageTempSuccess(chartData))
+            map((chartData: []) => new noaaActions.LoadAverageTempSuccess(chartData))
         )
     )
     )

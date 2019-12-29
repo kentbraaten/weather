@@ -27,7 +27,7 @@ const getDateRange = (idx: number) => dateRanges[idx];
 export class AverageTempService {
   constructor(private http: HttpClient) { }
   
-  getChartData(location: string): Observable<AverageTempData[]> {
+  getChartData(location: string): Observable<any[]> {
     return interval(251).pipe(
       take(dateRanges.length),
       map(idx => getDateRange(idx)),
@@ -36,13 +36,14 @@ export class AverageTempService {
     )
   }
 
-  getData(location: string, startDate: string, endDate: string): Observable<AverageTempData> {
+  getData(location: string, startDate: string, endDate: string): Observable<any> {
     return this.http.get<AverageTempServiceReturnValue>(averageTempDataFunc(location, startDate, endDate),requestHeader())
     .pipe(
         map(results => results.results),
         filter(results => results && results.length > 0),
         mergeMap(l => l),
-        distinct(at => at.date)
+        map(result => [result.date.slice(0,4), result.value]),
+        distinct(at => at[0])
     );
   }
 }

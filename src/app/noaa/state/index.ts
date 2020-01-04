@@ -1,5 +1,5 @@
 import * as fromNoaa from './noaa.reducer';
-import * as fromRoot from '../../state/app.state';
+import * as fromRoot from '../../state/app.reducer';
 import {Location} from '../noaa.types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { distinct, map, filter, reduce, buffer, toArray, pluck } from 'rxjs/oper
 import { SelectorContext } from '@angular/compiler';
 
 export interface State extends fromRoot.State {
-    noaaData: fromNoaa.NoaaState;
+    noaa: fromNoaa.NoaaState;
 }
 
 export const getNoaaFeatureState = createFeatureSelector<fromNoaa.NoaaState>("noaa");

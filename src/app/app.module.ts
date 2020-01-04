@@ -10,6 +10,8 @@ import { environment } from 'src/environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {reducer} from './state/app.reducer';
 
 @NgModule({
   declarations: [
@@ -18,16 +20,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    StoreModule.forRoot({}),
+    StoreModule.forFeature("app",reducer),
+    NoaaModule,
     StoreDevtoolsModule.instrument({
       name: 'Weather App Devtools',
       maxAge: 25,
       logOnly: environment.production
     }),
-    NoaaModule,
     BrowserAnimationsModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

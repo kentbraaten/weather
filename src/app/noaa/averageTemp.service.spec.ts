@@ -33,7 +33,7 @@ describe('AverageTempService.getData()', () => {
     });
 
     it ("should have one value for each year", (done) => {
-      let data: AverageTempData[];
+      let data: (string|number)[][][];
       const service: AverageTempService = TestBed.get(AverageTempService);
       service.getData("CITY:US270013", "2001-01-01", "2010-01-01").pipe(toArray()).subscribe(at => 
         {
@@ -42,11 +42,11 @@ describe('AverageTempService.getData()', () => {
         (err) => console.log(err),
         () => {
           done();
-          expect(data.length).toBe(10);
-          expect(data.filter(at => at[0].startsWith("2001")).length).toBe(1);
+          expect(data.length).toBe(1);
+          expect(data[0].length).toBe(10);
+          expect(data[0].filter(at => at[0] =="2001").length).toBe(1);
         });
   });
-
 });
 
 /*

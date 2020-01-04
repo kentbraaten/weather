@@ -9,6 +9,7 @@ import { AverageTempService } from './noaa/averageTemp.service';
 import { MockAverageTempService } from './noaa/mock-averageTemp.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { GoogleChartsModule } from 'angular-google-charts';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
@@ -20,7 +21,8 @@ describe('AppComponent', () => {
         EffectsModule.forRoot([]),
         GoogleChartsModule.forRoot(),
         MatSidenavModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatProgressSpinnerModule
       ],
       declarations: [
         AppComponent

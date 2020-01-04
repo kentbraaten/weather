@@ -6,5 +6,8 @@
   <mat-sidenav-content>
     <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>
     <app-data-viewer></app-data-viewer>
+    <div *ngIf="waiting$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

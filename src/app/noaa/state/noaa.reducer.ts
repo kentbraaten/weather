@@ -15,7 +15,7 @@ export const initialState: NoaaState = {
     locationId: ""
 }
 
-export function reducer(state = initialState, action : NoaaActions) {
+export function reducer(state = initialState, action : NoaaActions): NoaaState {
     switch (action.type) {
         case NoaaActionTypes.LOAD_ACTIONS_SUCCESS: {
             return {

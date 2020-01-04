@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, interval } from 'rxjs';
+import { Observable, interval, from } from 'rxjs';
 import { AverageTempData, AverageTempServiceReturnValue, DateRange } from './noaa.types';
 import { averageTempDataFunc, requestHeader } from './service-meta-data';
 import {  map, distinct, mergeMap, toArray, take, concatMap, filter } from 'rxjs/operators';
@@ -18,7 +18,8 @@ const dateRanges = [
   {startDate: '1980-01-01', endDate: '1989-01-01'},
   {startDate: '1990-01-01', endDate: '1999-01-01'},
   {startDate: '2000-01-01', endDate: '2009-01-01'},
-  {startDate: '2010-01-01', endDate: '2019-01-01'}
+  {startDate: '2010-01-01', endDate: '2019-01-01'},
+  {startDate: '0000-00-00', endDate: '0000-00-00'}
 ]
 
 const getDateRange = (idx: number) => dateRanges[idx];
@@ -27,15 +28,22 @@ const getDateRange = (idx: number) => dateRanges[idx];
 export class AverageTempService {
   constructor(private http: HttpClient) { }
   
-  getChartData(location: string): Observable<any[]> {
+  getChartData(location: string): Observable<(string | number) [][]> {
     return interval(251).pipe(
       take(dateRanges.length),
       map(idx => getDateRange(idx)),
-      concatMap(range => this.getData(location, range.startDate, range.endDate)),
+      concatMap(range => {
+        //return this.getData(location, range.startDate, range.endDate);
+        if (range.startDate == '0000-00-00'){
+          return from(this.end());
+        } else {
+          return this.getData(location, range.startDate, range.endDate)
+        }
+      }),
     )
   }
 
-  getData(location: string, startDate: string, endDate: string): Observable<any> {
+  getData(location: string, startDate: string, endDate: string): Observable<(string | number) [][]> {
     return this.http.get<AverageTempServiceReturnValue>(averageTempDataFunc(location, startDate, endDate),requestHeader())
     .pipe(
         map(results => results.results),
@@ -45,6 +53,12 @@ export class AverageTempService {
         distinct(at => at[0]),
         toArray()
     );
+  }
+
+  theEnd : (string | number)[][] = [['0000-00-00', 0.0]];
+
+  end() : Observable<(string | number)[][]> {
+    return from([[['0000-00-00', 0.0]]]);
   }
 }
 

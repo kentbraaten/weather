@@ -3,7 +3,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { LocationsService } from '../locations.service';
 import { Location, AverageTempData } from '../noaa.types';
 import * as noaaActions from  './noaa.actions';
-import { mergeMap, map } from 'rxjs/operators';
+import * as appActions from '../../state/app.actions';
+import { mergeMap, map, finalize } from 'rxjs/operators';
 import { AverageTempService } from '../averageTemp.service';
 
 @Injectable()
@@ -24,8 +25,20 @@ export class NoaaEffects {
     loadAverageTempData$ = this.actions$.pipe(
         ofType(noaaActions.NoaaActionTypes.LOAD_AVERAGE_TEMP_DATA),
         mergeMap((action: noaaActions.LoadAverageTempData) => this.averageTempService.getChartData(action.payload).pipe(
-            map((chartData: []) => new noaaActions.LoadAverageTempSuccess(chartData))
+            map((chartData: (string | number)[][]) => {
+                if (chartData.length > 0 && (chartData[0])[0] == '0000-00-00'){
+                    return new appActions.StopWait();
+                } else {
+                    return new noaaActions.LoadAverageTempSuccess(chartData);
+                }
+            })
         )
     )
+    )
+
+    @Effect()
+    loadAverageTempDataWait$ = this.actions$.pipe(
+        ofType(noaaActions.NoaaActionTypes.LOAD_AVERAGE_TEMP_DATA),
+                map((action: noaaActions.LoadAverageTempData) => new appActions.StartWait())
     )
 }

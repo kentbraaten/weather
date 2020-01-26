@@ -5,31 +5,48 @@ const testActions = [
     {
         mindate: "1893-01-01",
        maxdate: "2019-11-18",
-        name: "Winchester, VA US",
+       city: "Winchester",
+       state: "Verginia",
+       country: "United States",
         datacoverage: 1,
         id: "CITY:US510018"
     },
     {
         mindate: "1891-07-01",
        maxdate: "2019-11-18",
-        name: "Aberdeen, WA US",
+       city: "Aberdeen",
+       state: "Washington",
+       country: "United States",
         datacoverage: 1,
         id: "CITY:US530001"
     },
     {
         mindate: "1891-07-01",
        maxdate: "2019-11-18",
-        name: "Anacortes, WA US",
+       city: "Anacortes",
+       state: "Washington",
+       country: "United States",
         datacoverage: 1,
         id: "CITY:US530002"
     },
     {
+        mindate: "1892-02-29",
+       maxdate: "2019-11-16",
+       city: "Paris",
+       state: null,
+       country: "France",
+        datacoverage: 1,
+        id: "CITY:FR000018"
+    },
+    {
         mindate: "1894-01-01",
        maxdate: "2019-11-18",
-        name: "Bellevue, WA US",
+       city: "Bellevue",
+       state: "Washington",
+       country: "United States",
         datacoverage: 1,
         id: "CITY:US530003"
-    },
+    }
 
 ];
 
@@ -50,7 +67,7 @@ describe("LocationReducer", () => {
     it("LOAD_ACCTION_SUCCESS should add locations to state",()=> {
         const loadAction = new locationActions.LoadLocationsSuccess(testActions);
         const newState = reducer(initialState, loadAction);
-        expect(newState.locations.length).toBe(4);
+        expect(newState.locations.length).toBe(5);
     });
 
     it ("SELECT_COUNTRY should set the country code", () => {

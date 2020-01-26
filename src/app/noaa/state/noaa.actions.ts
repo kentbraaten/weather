@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Location, AverageTempData } from '../noaa.types';
+import { LocationView, AverageTempData } from '../noaa.types';
 
 export enum NoaaActionTypes {
     LOAD_ACTIONS = '[noaa] Load Locations',
@@ -18,7 +18,7 @@ export class LoadLocations implements Action {
 
 export class LoadLocationsSuccess implements Action {
     readonly type = NoaaActionTypes.LOAD_ACTIONS_SUCCESS;
-    constructor(public payload: Location[]) {}
+    constructor(public payload: LocationView[]) {}
 }
 
 export class LoadLocationsFailure implements Action {

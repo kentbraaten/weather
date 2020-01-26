@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { LocationsService } from '../locations.service';
-import { Location, AverageTempData } from '../noaa.types';
+import { Location, AverageTempData, LocationView } from '../noaa.types';
 import * as noaaActions from  './noaa.actions';
 import * as appActions from '../../state/app.actions';
-import { mergeMap, map, finalize } from 'rxjs/operators';
+import { mergeMap, map, finalize, toArray } from 'rxjs/operators';
 import { AverageTempService } from '../averageTemp.service';
+import { getLocationViewListObservable } from '../locationFuncs';
 
 @Injectable()
 export class NoaaEffects {
@@ -16,10 +17,14 @@ export class NoaaEffects {
     @Effect()
     loadLocations$ = this.actions$.pipe(
         ofType(noaaActions.NoaaActionTypes.LOAD_ACTIONS),
-        mergeMap((action: noaaActions.LoadLocations) => this.locationsService.getData().pipe(
-            map((locations: Location[]) => new noaaActions.LoadLocationsSuccess(locations))) 
+        mergeMap((action: noaaActions.LoadLocations) => 
+            getLocationViewListObservable(this.locationsService.getData().
+                pipe(mergeMap(l => l))).pipe(
+                    toArray(),
+                    map((locations: LocationView[]) => new noaaActions.LoadLocationsSuccess(locations))
+                ) 
+            )
         )
-    )
 
     @Effect()
     loadAverageTempData$ = this.actions$.pipe(

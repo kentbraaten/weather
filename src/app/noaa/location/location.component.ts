@@ -26,15 +26,6 @@ export class LocationComponent implements OnInit {
     this.store.dispatch(new LoadLocations());
   }
 
-  searchCountries = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-      switchMap((term)=> this.store.select(fromNoaa.getLocationsSelector).pipe(
-        mergeMap(locs => locationFuncs.getCountriesList(term, from(locs)))
-      )
-    ));
-
     searchCities = (text$: Observable<string>) => {
       const ccPlusLocation$ = combineLatest(
         [
@@ -46,7 +37,7 @@ export class LocationComponent implements OnInit {
         debounceTime(200),
         distinctUntilChanged(),
           switchMap((term)=> ccPlusLocation$.pipe(
-            mergeMap(([locations, cc]) => locationFuncs.getCityList(cc, term, from(locations)))
+            mergeMap(([locations, cc]) => locationFuncs.getCityList("United States", term, from(locations)))
           )
         ));
     }

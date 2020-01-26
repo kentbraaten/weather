@@ -37,14 +37,14 @@ export const getLocationHierarchy = (locations$: Observable<Location>): Observab
 }
 */
 
-export const getCityList = (countryCode: string, cityName: string, locations$: Observable<Location>) : Observable<any> => {
+export const getCityList = (countryCode: string, cityName: string, locations$: Observable<LocationView>) : Observable<any> => {
     const lowerCityName = cityName.toLowerCase();
     return locations$.pipe(
-        filter(l => ccodeFromLn(l.name) == countryCode),
+        filter(l => l.country == countryCode),
         map(l => {
             return {
                 id: l.id,
-                name: cityNameFromLn(l.name)
+                name: l.city
             }
         }),
         filter(n => lowerCityName =="" || n.name.toLowerCase().startsWith(lowerCityName)),

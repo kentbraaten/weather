@@ -1,8 +1,8 @@
 import { NoaaActionTypes, NoaaActions } from './noaa.actions';
-import { Location, AverageTempData } from '../noaa.types';
+import { LocationView, AverageTempData } from '../noaa.types';
 
 export interface NoaaState {
-    locations: Location[],
+    locations: LocationView[],
     averageTempData: (string | number)[][],
     countryCode: string,
     locationId: string

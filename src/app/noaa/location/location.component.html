@@ -4,12 +4,6 @@
 
 <div>
   <div>
-    <label>Country</label>
-    <input class="form-control" [ngbTypeahead]=searchCountries 
-    placement="bottom" [inputFormatter]="countryFormatter" [resultTemplate]="rt"
-    (selectItem)="selectCountry($event)"/>
-  </div>
-  <div>
     <label>City</label>
     <input class="form-control" [ngbTypeahead]=searchCities 
  placement="bottom" [inputFormatter]="countryFormatter" [resultTemplate]="rt"

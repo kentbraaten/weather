@@ -4,6 +4,7 @@ import { debounceTime, distinctUntilChanged, mergeMap, switchMap } from 'rxjs/op
 import { Store } from '@ngrx/store';
 import { LoadLocations, SelectCountry, SelectLocation } from '../state/noaa.actions';
 import * as fromNoaa from '../state/index';
+import * as locationFuncs from '../locationFuncs';
 import {Location} from '../noaa.types';
 
 @Component({
@@ -30,7 +31,7 @@ export class LocationComponent implements OnInit {
     debounceTime(200),
     distinctUntilChanged(),
       switchMap((term)=> this.store.select(fromNoaa.getLocationsSelector).pipe(
-        mergeMap(locs => fromNoaa.getCountriesList(term, from(locs)))
+        mergeMap(locs => locationFuncs.getCountriesList(term, from(locs)))
       )
     ));
 
@@ -45,7 +46,7 @@ export class LocationComponent implements OnInit {
         debounceTime(200),
         distinctUntilChanged(),
           switchMap((term)=> ccPlusLocation$.pipe(
-            mergeMap(([locations, cc]) => fromNoaa.getCityList(cc, term, from(locations)))
+            mergeMap(([locations, cc]) => locationFuncs.getCityList(cc, term, from(locations)))
           )
         ));
     }

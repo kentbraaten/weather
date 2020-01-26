@@ -1,6 +1,7 @@
 import * as locationActions from './noaa.actions';
 import {initialState, reducer} from './noaa.reducer';
-import {getCountriesList, getLocationsSelector, getCityList} from './index';
+import {getCountriesList, getCityList, regionNamesFromLn} from '../locationFuncs';
+import {getLocationsSelector} from './index';
 import { from } from 'rxjs';
 
 const testActions = [

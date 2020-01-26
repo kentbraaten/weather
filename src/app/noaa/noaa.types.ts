@@ -6,6 +6,20 @@ export interface Location {
     id: string;
 }
 
+export interface LocationView {
+    mindate: string;
+    maxdate: string;
+    city: string;
+    state: string;
+    country: string;
+    id: string;
+}
+
+export interface LocationNode {
+    region: Location;
+    subRegions: LocationNode[];
+}
+
 export interface AverageTempData {
     date: string;
     datatype: string;

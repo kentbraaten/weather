@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { LoadLocations, SelectCountry, SelectLocation } from '../state/noaa.actions';
 import * as fromNoaa from '../state/index';
 import * as locationFuncs from '../locationFuncs';
-import {Location} from '../noaa.types';
+import {Location, LocationView} from '../noaa.types';
 
 @Component({
   selector: 'app-location',
@@ -17,14 +17,39 @@ export class LocationComponent implements OnInit {
   @ViewChild('input',{static: true}) input: ElementRef;
 
   public lookup$ : Observable<Location>;
+  public locations$ : Observable<LocationView[]>;
   public model : any;
+  public selectedLocationId: string;
  
   constructor(
     private store: Store<fromNoaa.State> ) { }
 
   ngOnInit() {
     this.store.dispatch(new LoadLocations());
+    this.locations$ = this.store.select(fromNoaa.getLocationsSelector);
   }
+
+  locationSelected(selectedLocation: LocationView) {
+    this.store.dispatch(new SelectLocation(selectedLocation.id));
+  }
+
+  groupByCountry(location: LocationView) {
+    location.state ? `${location.country}-${location.state}` : location.country;
+  }
+
+  runLookup(term: string) {
+    console.log("This is what was typed " + term);
+  }
+
+  compareLocations(item: LocationView, selected: LocationView)  {
+    if (selected.country && item.country) {
+        return item.country === selected.country;
+    }
+    if (item.city && selected.city) {
+        return item.city === selected.city;
+    }
+    return false;
+};
 
     searchCities = (text$: Observable<string>) => {
       const ccPlusLocation$ = combineLatest(
@@ -33,6 +58,7 @@ export class LocationComponent implements OnInit {
           this.store.select(fromNoaa.getCountrySelector)
         ]
       );
+
       return text$.pipe(
         debounceTime(200),
         distinctUntilChanged(),

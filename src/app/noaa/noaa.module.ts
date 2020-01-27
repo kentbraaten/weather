@@ -12,6 +12,7 @@ import { NoaaEffects } from './state/noaa.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataViewerComponent } from './data-viewer/data-viewer.component';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [LocationComponent, DataViewerComponent],
@@ -21,6 +22,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
     EffectsModule.forFeature([NoaaEffects]),
     GoogleChartsModule.forRoot(),
     NgbModule,
+    NgSelectModule,
     FormsModule
   ],
   providers: [ {provide: LocationsService, useClass: LocationsService}, AverageTempService],

@@ -1,13 +1,13 @@
-<ng-template #rt let-r="result" let-t="term">
-  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-</ng-template>
-
-<div>
-  <div>
-    <label>City</label>
-    <input class="form-control" [ngbTypeahead]=searchCities 
- placement="bottom" [inputFormatter]="countryFormatter" [resultTemplate]="rt"
- (selectItem)="selectLocation($event)"
- />
-  </div>
-</div>
+<ng-select class="custom" [items]="locations$ | async"
+               bindLabel="city"
+               [groupBy]="groupByCountry"
+               [compareWith]="compareLocations"
+               [(ngModel)]="selectedLocationId"
+               [selectableGroupAsModel]="true"
+               (change)="locationSelected($event)"
+               (search)="runLookup($event)"         
+    > 
+    <ng-template ng-optgroup-tmp let-item="item">
+      {{item.country}}
+  </ng-template>
+  </ng-select>

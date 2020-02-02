@@ -19,6 +19,10 @@ export interface CountryView {
     country: string;
 }
 
+export interface StateRgnView {
+    state: string;
+}
+
 export interface LocationNode {
     region: Location;
     subRegions: LocationNode[];

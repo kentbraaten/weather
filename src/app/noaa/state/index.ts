@@ -18,6 +18,9 @@ export const getLocationsSelector = createSelector(getNoaaFeatureState,
 export const getCountrySelector = createSelector(getNoaaFeatureState,
     ns => ns.countryCode);
 
+export const getStateRegion = createSelector(getNoaaFeatureState,
+    ns => ns.stateRgn);
+
 export const locationIdSelector = createSelector(getNoaaFeatureState,
     ns => ns.locationId);
 

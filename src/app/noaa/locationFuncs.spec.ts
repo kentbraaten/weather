@@ -43,7 +43,6 @@ describe("getLocationViewListObservable", () => {
     });
 });
 
-
 const testLocations: Location[] = [
     {
         mindate: "1893-08-08",

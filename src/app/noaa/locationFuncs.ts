@@ -1,11 +1,20 @@
-import {Location, LocationView, CountryView} from './noaa.types';
-import { distinct, map, filter, reduce, buffer, toArray, pluck, mergeMap, tap } from 'rxjs/operators';
-import { Observable, from } from 'rxjs';
+import {Location, LocationView, CountryView, StateRgnView} from './noaa.types';
+import { distinct, map, filter, toArray, mergeMap } from 'rxjs/operators';
+import { Observable, from, combineLatest } from 'rxjs';
 
 const countryComparFunc = (c1: CountryView, c2: CountryView): number => {
     if (c1.country > c2.country) {
         return 1;
     } else if (c1.country < c2.country){
+        return -1;
+    }
+    return 0;
+}
+
+const stateComparFunc = (c1: StateRgnView, c2: StateRgnView): number => {
+    if (c1.state > c2.state) {
+        return 1;
+    } else if (c1.state < c2.state){
         return -1;
     }
     return 0;
@@ -20,6 +29,36 @@ export const getCountriesList = (locations$: Observable<LocationView[]>): Observ
             map(countryNames => countryNames.sort(countryComparFunc))
         ))
     )
+}
+
+export const getStateRegionList = (locations$: Observable<LocationView[]>,
+    countrySelector$: Observable<String>): Observable<StateRgnView[]> => {
+    return combineLatest(locations$, countrySelector$).pipe(
+        mergeMap(([locations, selectedCountry])=> {
+            return from(locations).pipe(
+                filter(loc => loc.country == selectedCountry),
+                map(loc => {return {state: loc.state}}),
+                distinct(sr => sr.state),
+                toArray(),
+                map(stateNames => stateNames.sort(stateComparFunc))
+            )
+        })
+    )
+} 
+
+export const getCitiesList = (locations$: Observable<LocationView[]>,
+                                countrySelector$: Observable<string>,
+                                stateRgnSelector$: Observable<string>): Observable<LocationView[]> =>{
+    return combineLatest(locations$, countrySelector$, stateRgnSelector$).pipe(
+        mergeMap(([locations, selectCountry, selectedState]) => {
+            return from(locations).pipe(
+                filter(loc => (selectCountry == "" || loc.country == selectCountry) &&
+                              (selectedState == "" || loc.state == selectedState)
+                     ),
+                toArray()
+            )
+        })
+    );             
 }
 
 export const getCityList = (countryCode: string, cityName: string, locations$: Observable<LocationView>) : Observable<any> => {

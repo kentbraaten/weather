@@ -5,6 +5,7 @@ export interface NoaaState {
     locations: LocationView[],
     averageTempData: (string | number)[][],
     countryCode: string,
+    stateRgn: string,
     locationId: string
 }
 
@@ -12,7 +13,8 @@ export const initialState: NoaaState = {
     locations: [],
     averageTempData: [],
     countryCode: "",
-    locationId: ""
+    locationId: "",
+    stateRgn: ""
 }
 
 export function reducer(state = initialState, action : NoaaActions): NoaaState {
@@ -27,6 +29,15 @@ export function reducer(state = initialState, action : NoaaActions): NoaaState {
             return {
                 ...state,
                 countryCode: action.payload,
+                stateRgn: "",
+                locationId: "",
+                averageTempData: []
+            }
+        }
+        case NoaaActionTypes.SELECT_STATE_REGION: {
+            return {
+                ...state,
+                stateRgn: action.payload,
                 locationId: "",
                 averageTempData: []
             }

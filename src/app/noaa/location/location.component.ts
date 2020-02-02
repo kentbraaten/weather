@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable, from, forkJoin, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, mergeMap, switchMap, map, toArray, tap } from 'rxjs/operators'
 import { Store } from '@ngrx/store';
-import { LoadLocations, SelectCountry, SelectLocation } from '../state/noaa.actions';
+import { LoadLocations, SelectCountry, SelectLocation, SelectStateRegion } from '../state/noaa.actions';
 import * as fromNoaa from '../state/index';
 import * as locationFuncs from '../locationFuncs';
-import {Location, LocationView, CountryView} from '../noaa.types';
+import {Location, LocationView, CountryView, StateRgnView} from '../noaa.types';
 
 @Component({
   selector: 'app-location',
@@ -18,9 +18,15 @@ export class LocationComponent implements OnInit {
 
   public lookup$ : Observable<Location>;
   public locations$ : Observable<LocationView[]>;
+  public cityLocations$ : Observable<LocationView[]>;
   public countries$ : Observable<CountryView[]>;
+  public stateRgns$ : Observable<StateRgnView[]>;
+  public selectedCountry$ : Observable<string>;
+  public selectedStateRegion$ : Observable<string>;
+  public stateRegbind : StateRgnView;
   public model : any;
   public selectedLocationId: string;
+
  
   constructor(
     private store: Store<fromNoaa.State> ) { }
@@ -28,9 +34,20 @@ export class LocationComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadLocations());
     this.locations$ = this.store.select(fromNoaa.getLocationsSelector);
+    this.selectedCountry$ = this.store.select(fromNoaa.getCountrySelector);
+    this.selectedStateRegion$ = this.store.select(fromNoaa.getStateRegion);
+    this.stateRgns$ = locationFuncs.getStateRegionList(this.locations$, this.selectedCountry$);
     this.countries$ = locationFuncs.getCountriesList(this.locations$);
+    this.cityLocations$ = locationFuncs.getCitiesList(this.locations$, this.selectedCountry$, this.selectedStateRegion$);
   }
 
+  /*
+  hit for clearing the state a location dropdowns - use a Viewchild
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+
+  // Call to clear
+  this.ngSelectComponent.handleClearClick();
+  */
   locationSelected(selectedLocation: LocationView) {
     this.store.dispatch(new SelectLocation(selectedLocation.id));
   }
@@ -55,33 +72,21 @@ export class LocationComponent implements OnInit {
         return item.city === selected.city;
     }
     return false;
-};
+  };
 
-    searchCities = (text$: Observable<string>) => {
-      const ccPlusLocation$ = combineLatest(
-        [
-          this.store.select(fromNoaa.getLocationsSelector),
-          this.store.select(fromNoaa.getCountrySelector)
-        ]
-      );
+  selectCountry($event) {
+    const country = ($event && $event.country) ? $event.country : "";
+    this.store.dispatch(new SelectCountry(country));
+  }
 
-      return text$.pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-          switchMap((term)=> ccPlusLocation$.pipe(
-            mergeMap(([locations, cc]) => locationFuncs.getCityList("United States", term, from(locations)))
-          )
-        ));
-    }
+  selectState($event) {
+    const state = ($event && $event.state) ? $event.state : "";
+    this.store.dispatch(new SelectStateRegion(state));
+  }
 
+  selectLocation($event) {
+    this.store.dispatch(new SelectLocation($event.item.id));
+  }
 
-    selectCountry($event) {
-      this.store.dispatch(new SelectCountry($event.item.code));
-    }
-
-    selectLocation($event) {
-      this.store.dispatch(new SelectLocation($event.item.id));
-    }
-
-    countryFormatter = (value: any) => value.name;
+  countryFormatter = (value: any) => value.name;
 }

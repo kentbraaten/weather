@@ -1,20 +1,11 @@
 import * as locationActions from './noaa.actions';
 import {initialState, reducer} from './noaa.reducer';
-import {getCountriesList, getCityList, regionNamesFromLn} from '../locationFuncs';
+import {getCountriesList, getCityList, regionNamesFromLn, getCitiesList, getStateRegionList} from '../locationFuncs';
 import {getLocationsSelector} from './index';
 import { from, of } from 'rxjs';
-import { doesNotThrow } from 'assert';
+
 
 const testActions = [
-    {
-        mindate: "1893-01-01",
-       maxdate: "2019-11-18",
-       city: "Winchester",
-       state: "Verginia",
-       country: "United States",
-        datacoverage: 1,
-        id: "CITY:US510018"
-    },
     {
         mindate: "1891-07-01",
        maxdate: "2019-11-18",
@@ -59,9 +50,42 @@ const testActions = [
        country: "Canada",
         datacoverage: 1,
         id: "CITY:US530003"
+    },
+    {
+        mindate: "1893-01-01",
+       maxdate: "2019-11-18",
+       city: "Winchester",
+       state: "Verginia",
+       country: "United States",
+        datacoverage: 1,
+        id: "CITY:US510018"
     }
-
 ];
+
+describe("getCitiesList", () => {
+    it("should return only cities associated with the selected country",(done) => {
+        getCitiesList(of(testActions),of("France"), of("")).subscribe(
+            {
+                next: (locs) => {
+                    expect(locs.length).toEqual(1);
+                    expect(locs[0].city).toEqual("Paris");
+                    done();
+                }
+            }
+        );
+    })
+
+    it ("should return all cities if country is the empty string", (done) => {
+        getCitiesList(of(testActions),of(""), of("")).subscribe(
+            {
+                next: (locs) => {
+                    expect(locs.length).toEqual(6);
+                    done();
+                }
+            }
+        )
+    });
+});
 
 describe("getCityList", () => {
     it("should return only cities associated with the country",(done) => {
@@ -90,6 +114,33 @@ describe("getCityList", () => {
         expect(results.length).toBe(2);
         expect(results.filter(c => c.name == "Aberdeen").length).toBe(1);
         expect(results.filter(c => c.name == "Anacortes").length).toBe(1);
+    });
+});
+
+
+describe("getStateRegionList", () => {
+    it("should return a unique list of state regions", (done) => {
+        getStateRegionList(of(testActions), of("United States")).subscribe(
+            {
+                next: (stateRgns) => {
+                    expect(stateRgns.length).toEqual(2);
+                    expect(stateRgns[0]).not.toEqual(stateRgns[1]);
+                    done();
+                }
+            }
+        )
+    });
+
+    it("should sort the state regions", (done) => {
+        getStateRegionList(of(testActions), of("United States")).subscribe(
+            {
+                next: (stateRgns) => {
+                    expect(stateRgns[0].state).toEqual("Verginia");
+                    expect(stateRgns[1].state).toEqual("Washington");
+                    done();
+                }
+            }
+        )
     });
 });
 

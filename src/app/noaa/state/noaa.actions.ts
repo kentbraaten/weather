@@ -6,6 +6,7 @@ export enum NoaaActionTypes {
     LOAD_ACTIONS_SUCCESS = '[noaa] Load Locations Success',
     LOAD_ACTIONS_FAILURE = '[noaa] Load Locations Failure',
     SELECT_COUNTRY = '[noaa] Select Country',
+    SELECT_STATE_REGION = '[noaa] Select State Region',
     SELECT_LOCATION = '[noaa] Select Location',
     LOAD_AVERAGE_TEMP_DATA = '[noaa] Load Average Temp Data',
     LOAD_AVERAGE_TEMP_PART = '[noaa] Load Average Temp Data Success',
@@ -28,6 +29,11 @@ export class LoadLocationsFailure implements Action {
 
 export class SelectCountry implements Action {
     readonly type = NoaaActionTypes.SELECT_COUNTRY;
+    constructor(public payload: string) {}
+}
+
+export class SelectStateRegion implements Action {
+    readonly type = NoaaActionTypes.SELECT_STATE_REGION;
     constructor(public payload: string) {}
 }
 
@@ -58,5 +64,6 @@ SelectCountry        |
 SelectLocation       |
 LoadAverageTempData  |
 LoadAverageTempSuccess |
-LoadAverageTempFailure
+LoadAverageTempFailure |
+SelectStateRegion
 ;

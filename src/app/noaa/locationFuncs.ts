@@ -61,21 +61,6 @@ export const getCitiesList = (locations$: Observable<LocationView[]>,
     );             
 }
 
-export const getCityList = (countryCode: string, cityName: string, locations$: Observable<LocationView>) : Observable<any> => {
-    const lowerCityName = cityName.toLowerCase();
-    return locations$.pipe(
-        filter(l => l.country == countryCode),
-        map(l => {
-            return {
-                id: l.id,
-                name: l.city
-            }
-        }),
-        filter(n => lowerCityName =="" || n.name.toLowerCase().startsWith(lowerCityName)),
-        toArray()
-    )
-}
-
 export const getLocationViewListObservable = (source : Observable<Location> ): Observable<LocationView> => {
     return source.pipe(
         map(l => {

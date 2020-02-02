@@ -1,6 +1,6 @@
 import * as locationActions from './noaa.actions';
 import {initialState, reducer} from './noaa.reducer';
-import {getCountriesList, getCityList, regionNamesFromLn, getCitiesList, getStateRegionList} from '../locationFuncs';
+import {getCountriesList, regionNamesFromLn, getCitiesList, getStateRegionList} from '../locationFuncs';
 import {getLocationsSelector} from './index';
 import { from, of } from 'rxjs';
 
@@ -85,88 +85,4 @@ describe("getCitiesList", () => {
             }
         )
     });
-});
-
-describe("getCityList", () => {
-    it("should return only cities associated with the country",(done) => {
-        const loadAction = new locationActions.LoadLocationsSuccess(testActions);
-        const newState = reducer(initialState, loadAction);
-        const locations = getLocationsSelector({ noaa: newState});
-        var results;
-        getCityList("France", "", from(locations)).subscribe(
-            l => results = l
-        );
-        done();
-        expect(results.length).toBe(1);
-        expect(results.filter(c => c.name == "Paris").length).toBe(1);
-    });
-
-    it("should filter based on term",(done) => {
-        const loadAction = new locationActions.LoadLocationsSuccess(testActions);
-        const newState = reducer(initialState, loadAction);
-        const locations = getLocationsSelector({ noaa: newState});
-        var results;
-        expect(locations.length).toBe(6);
-        getCityList("United States", "A", from(locations)).subscribe(
-            l => results = l
-        );
-        done();
-        expect(results.length).toBe(2);
-        expect(results.filter(c => c.name == "Aberdeen").length).toBe(1);
-        expect(results.filter(c => c.name == "Anacortes").length).toBe(1);
-    });
-});
-
-
-describe("getStateRegionList", () => {
-    it("should return a unique list of state regions", (done) => {
-        getStateRegionList(of(testActions), of("United States")).subscribe(
-            {
-                next: (stateRgns) => {
-                    expect(stateRgns.length).toEqual(2);
-                    expect(stateRgns[0]).not.toEqual(stateRgns[1]);
-                    done();
-                }
-            }
-        )
-    });
-
-    it("should sort the state regions", (done) => {
-        getStateRegionList(of(testActions), of("United States")).subscribe(
-            {
-                next: (stateRgns) => {
-                    expect(stateRgns[0].state).toEqual("Verginia");
-                    expect(stateRgns[1].state).toEqual("Washington");
-                    done();
-                }
-            }
-        )
-    });
-});
-
-describe("getCountriesList", () => {
-    it("should return a distinct list of country names", (done) => {
-        getCountriesList(of(testActions))
-            .subscribe(
-                {
-                    next: (l) => {
-                        expect(l.length).toEqual(3);
-                        done();
-                    }
-                }
-            )
-    });
-
-    it("It should return a sorted list of country names", (done) => {
-        getCountriesList(of(testActions))
-            .subscribe({
-                    next: (l) => {
-                        expect(l[0].country).toEqual("Canada");
-                        expect(l[1].country).toEqual("France");
-                        expect(l[2].country).toEqual("United States");
-                        done();
-                    }
-                }
-            )
-    })
 });

@@ -1,4 +1,4 @@
-import {getCountriesList, getCityList, regionNamesFromLn, getLocationViewListObservable} from './locationFuncs';
+import {getCountriesList, regionNamesFromLn, getLocationViewListObservable} from './locationFuncs';
 import {Location} from './noaa.types';
 import { from, of } from 'rxjs';
 import { toArray } from 'rxjs/operators';

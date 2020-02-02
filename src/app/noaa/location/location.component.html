@@ -1,13 +1,13 @@
+<ng-select class="custom" [items]="countries$ | async"  
+        bindLabel="country"
+        (change)="countrySelected"   
+    > 
+</ng-select>
+
+
 <ng-select class="custom" [items]="locations$ | async"
                bindLabel="city"
-               [groupBy]="groupByCountry"
-               [compareWith]="compareLocations"
                [(ngModel)]="selectedLocationId"
-               [selectableGroupAsModel]="true"
-               (change)="locationSelected($event)"
-               (search)="runLookup($event)"         
+               (change)="locationSelected($event)"    
     > 
-    <ng-template ng-optgroup-tmp let-item="item">
-      {{item.country}}
-  </ng-template>
-  </ng-select>
+</ng-select> 

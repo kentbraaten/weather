@@ -1,41 +1,26 @@
-import {Location, LocationView} from './noaa.types';
-import { distinct, map, filter, reduce, buffer, toArray, pluck, mergeMap } from 'rxjs/operators';
+import {Location, LocationView, CountryView} from './noaa.types';
+import { distinct, map, filter, reduce, buffer, toArray, pluck, mergeMap, tap } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 
-export const getCountriesList = (key: string, locations$: Observable<Location>): Observable<any> =>{
-    const lowerKey = key.toLocaleLowerCase();
-    const seed: string[] = [];
-    //buffer
+const countryComparFunc = (c1: CountryView, c2: CountryView): number => {
+    if (c1.country > c2.country) {
+        return 1;
+    } else if (c1.country < c2.country){
+        return -1;
+    }
+    return 0;
+}
+
+export const getCountriesList = (locations$: Observable<LocationView[]>): Observable<CountryView[]> =>{
     return locations$.pipe(
-        map(l => l.name),
-        distinct(s => s.slice(s.length - 2)),
-        map(n => {
-            let code = n.slice(n.length - 2);
-            return {
-                code: code,
-                name: countryNameFromCode(code)
-            }
-        }),
-            
-        filter(n => key == "" || n.name.toLowerCase().startsWith(lowerKey)),
-        toArray()
+        mergeMap(loc => from(loc).pipe(
+            map(loc => {return {country: loc.country}}),
+            distinct(c => c.country),
+            toArray(),
+            map(countryNames => countryNames.sort(countryComparFunc))
+        ))
     )
 }
-
-/*
-export const getLocationHierarchy = (locations$: Observable<Location>): Observable<LocationNode> => {
-    locations$.pipe(
-        map(l => {
-            return {
-                city: cityNameFromLn(l.name),
-                state: statenameFromLn(l.name)
-            }
-        })
-    )
-
-    return null;
-}
-*/
 
 export const getCityList = (countryCode: string, cityName: string, locations$: Observable<LocationView>) : Observable<any> => {
     const lowerCityName = cityName.toLowerCase();

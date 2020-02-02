@@ -15,6 +15,10 @@ export interface LocationView {
     id: string;
 }
 
+export interface CountryView {
+    country: string;
+}
+
 export interface LocationNode {
     region: Location;
     subRegions: LocationNode[];

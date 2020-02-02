@@ -2,7 +2,8 @@ import * as locationActions from './noaa.actions';
 import {initialState, reducer} from './noaa.reducer';
 import {getCountriesList, getCityList, regionNamesFromLn} from '../locationFuncs';
 import {getLocationsSelector} from './index';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
+import { doesNotThrow } from 'assert';
 
 const testActions = [
     {
@@ -49,6 +50,15 @@ const testActions = [
        country: "United States",
         datacoverage: 1,
         id: "CITY:US530003"
+    },
+    {
+        mindate: "1894-01-01",
+       maxdate: "2019-11-18",
+       city: "Toronto",
+       state: null,
+       country: "Canada",
+        datacoverage: 1,
+        id: "CITY:US530003"
     }
 
 ];
@@ -59,7 +69,6 @@ describe("getCityList", () => {
         const newState = reducer(initialState, loadAction);
         const locations = getLocationsSelector({ noaa: newState});
         var results;
-        expect(locations.length).toBe(5);
         getCityList("France", "", from(locations)).subscribe(
             l => results = l
         );
@@ -73,7 +82,7 @@ describe("getCityList", () => {
         const newState = reducer(initialState, loadAction);
         const locations = getLocationsSelector({ noaa: newState});
         var results;
-        expect(locations.length).toBe(5);
+        expect(locations.length).toBe(6);
         getCityList("United States", "A", from(locations)).subscribe(
             l => results = l
         );
@@ -82,4 +91,31 @@ describe("getCityList", () => {
         expect(results.filter(c => c.name == "Aberdeen").length).toBe(1);
         expect(results.filter(c => c.name == "Anacortes").length).toBe(1);
     });
+});
+
+describe("getCountriesList", () => {
+    it("should return a distinct list of country names", (done) => {
+        getCountriesList(of(testActions))
+            .subscribe(
+                {
+                    next: (l) => {
+                        expect(l.length).toEqual(3);
+                        done();
+                    }
+                }
+            )
+    });
+
+    it("It should return a sorted list of country names", (done) => {
+        getCountriesList(of(testActions))
+            .subscribe({
+                    next: (l) => {
+                        expect(l[0].country).toEqual("Canada");
+                        expect(l[1].country).toEqual("France");
+                        expect(l[2].country).toEqual("United States");
+                        done();
+                    }
+                }
+            )
+    })
 });

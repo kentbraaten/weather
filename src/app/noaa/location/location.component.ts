@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable, from, forkJoin, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, mergeMap, switchMap } from 'rxjs/operators'
+import { debounceTime, distinctUntilChanged, mergeMap, switchMap, map, toArray, tap } from 'rxjs/operators'
 import { Store } from '@ngrx/store';
 import { LoadLocations, SelectCountry, SelectLocation } from '../state/noaa.actions';
 import * as fromNoaa from '../state/index';
 import * as locationFuncs from '../locationFuncs';
-import {Location, LocationView} from '../noaa.types';
+import {Location, LocationView, CountryView} from '../noaa.types';
 
 @Component({
   selector: 'app-location',
@@ -18,6 +18,7 @@ export class LocationComponent implements OnInit {
 
   public lookup$ : Observable<Location>;
   public locations$ : Observable<LocationView[]>;
+  public countries$ : Observable<CountryView[]>;
   public model : any;
   public selectedLocationId: string;
  
@@ -27,10 +28,15 @@ export class LocationComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadLocations());
     this.locations$ = this.store.select(fromNoaa.getLocationsSelector);
+    this.countries$ = locationFuncs.getCountriesList(this.locations$);
   }
 
   locationSelected(selectedLocation: LocationView) {
     this.store.dispatch(new SelectLocation(selectedLocation.id));
+  }
+
+  countrySelected(country: string){
+    this.store.dispatch(new this.selectCountry(country));
   }
 
   groupByCountry(location: LocationView) {

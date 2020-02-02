@@ -18,7 +18,7 @@ describe('AverageTempService.getData()', () => {
       providers:[AverageTempService]
     }));
 
-    it ("should return data", (done) => {
+    xit ("should return data", (done) => {
         let received = false;
         const service: AverageTempService = TestBed.get(AverageTempService);
         service.getData("CITY:US270013", "2000-01-01", "2010-01-01").subscribe(at => 
@@ -32,7 +32,7 @@ describe('AverageTempService.getData()', () => {
           });
     });
 
-    it ("should have one value for each year", (done) => {
+    xit ("should have one value for each year", (done) => {
       let data: (string|number)[][][];
       const service: AverageTempService = TestBed.get(AverageTempService);
       service.getData("CITY:US270013", "2001-01-01", "2010-01-01").pipe(toArray()).subscribe(at => 

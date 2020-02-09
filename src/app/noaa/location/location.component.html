@@ -10,7 +10,8 @@
 <ng-select class="custom" [items]="stateRgns$ | async"  
         bindLabel="state"
         bindValue="stateRegbind"
-        (change)="selectState($event)" 
+        (change)="selectState($event)"
+        #stateSelect
     > 
 </ng-select>
 </div>
@@ -18,7 +19,8 @@
 <div>
 <ng-select class="custom" [items]="cityLocations$ | async"
                bindLabel="city"
-               (change)="locationSelected($event)"    
+               (change)="locationSelected($event)"
+               #citySelect
     > 
 </ng-select>
 </div>

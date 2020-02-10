@@ -21,7 +21,7 @@ describe("serviceDataToChartData", () => {
         serviceDataToChartData(of(averageTempData))
             .subscribe({
                 next: (data: (string | number)[][]) => {
-                    expect(data[0][1]).toEqual(54.1);
+                    expect(data[0][1]).toBe(31.7);
                     done();
                 }
             }
@@ -37,42 +37,21 @@ const averageTempData: AverageTempData[] =[
         datatype: "TMAX",
         station: "GHCND:USC00211448",
         attributes: "0",
-        value: 54.1
+        value: 25
     },
     {
         date: "2000-01-01T00:00:00",
         datatype: "TMAX",
         station: "GHCND:USC00214884",
         attributes: "0",
-        value: 58.1
+        value: 35
     },
     {
         date: "2000-01-01T00:00:00",
         datatype: "TMAX",
         station: "GHCND:USC00215838",
         attributes: "0",
-        value: 55.3
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USC00218450",
-        attributes: "0",
-        value: 56.5
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USW00014922",
-        attributes: "0",
-        value: 55.1
-    },
-    {
-        date: "2000-01-01T00:00:00",
-        datatype: "TMAX",
-        station: "GHCND:USW00094960",
-        attributes: "W",
-        value: 54.8
+        value: 35
     },
     {
         date: "2001-01-01T00:00:00",

@@ -4,6 +4,7 @@ import { Observable, interval, from } from 'rxjs';
 import { AverageTempData, AverageTempServiceReturnValue, DateRange } from './noaa.types';
 import { averageTempDataFunc, requestHeader } from './service-meta-data';
 import {  map, distinct, mergeMap, toArray, take, concatMap, filter } from 'rxjs/operators';
+import { serviceDataToChartData } from './dataFuncs';
 
 const dateRanges = [
   {startDate: '1890-01-01', endDate: '1899-01-01'},
@@ -44,15 +45,10 @@ export class AverageTempService {
   }
 
   getData(location: string, startDate: string, endDate: string): Observable<(string | number) [][]> {
-    return this.http.get<AverageTempServiceReturnValue>(averageTempDataFunc(location, startDate, endDate),requestHeader())
+    return serviceDataToChartData(this.http.get<AverageTempServiceReturnValue>(averageTempDataFunc(location, startDate, endDate),requestHeader())
     .pipe(
         map(results => results.results),
-        filter(results => results && results.length > 0),
-        mergeMap(l => l),
-        map(result => [result.date.slice(0,4), result.value]),
-        distinct(at => at[0]),
-        toArray()
-    );
+    ));
   }
 
   theEnd : (string | number)[][] = [['0000-00-00', 0.0]];

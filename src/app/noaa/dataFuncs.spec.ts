@@ -1,6 +1,7 @@
 import {AverageTempData} from './noaa.types';
-import { serviceDataToChartData } from './dataFuncs';
+import { serviceDataToChartData, hotestYears } from './dataFuncs';
 import { of } from 'rxjs';
+import { assertNotNull } from '@angular/compiler/src/output/output_ast';
 
 describe("serviceDataToChartData", () => {
     it("Should return one row of data for each year", (done) => {
@@ -29,6 +30,65 @@ describe("serviceDataToChartData", () => {
             )
     })
 });
+
+describe("hotestYears", () => {
+    it ("should return the hotest years sorted hotest first", (done) => {
+        hotestYears(5, of(chartData)).subscribe(
+            {
+                next: (sortedList: (string | number) [][] ) => {
+                    expect(sortedList[0][0]).toEqual("2008");
+                    expect(sortedList[0][1]).toEqual(46);
+                    expect(sortedList[1][0]).toEqual("2012");
+                    expect(sortedList[1][1]).toEqual(45);
+                    expect(sortedList[2][0]).toEqual("2006");
+                    expect(sortedList[2][1]).toEqual(44);
+                    expect(sortedList[3][0]).toEqual("2005");
+                    expect(sortedList[3][1]).toEqual(43);
+                    expect(sortedList[4][0]).toEqual("2009");
+                    expect(sortedList[4][1]).toEqual(42);
+                    done();
+                }
+            }
+        );
+    })
+
+    it("should return num rows requested", (done) => {
+        hotestYears(4, of(chartData)).subscribe(
+            {
+                next: (l) => {
+                    expect(l.length).toEqual(4);
+                    done();
+                }
+            }
+        )
+    });
+
+    it ("should handle more rows requested than available", (done) => {
+        hotestYears(20, of(chartData)).subscribe({
+            next: l => {
+                expect(l.length).toEqual(14);
+                done();
+            }
+        })
+    })
+});
+
+const chartData: (string | number) [][] = [
+    ["2001", 32],
+    ["2002", 28],
+    ["2003", 33],
+    ["2004", 35],
+    ["2005", 43],
+    ["2006", 44],
+    ["2007", 30],
+    ["2008", 46],
+    ["2009", 42],
+    ["2010", 27],
+    ["2011", 30],
+    ["2012", 45],
+    ["2013", 36],
+    ["2014", 40]
+];
 
 
 const averageTempData: AverageTempData[] =[

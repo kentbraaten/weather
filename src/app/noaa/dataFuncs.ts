@@ -4,12 +4,8 @@ import { map, filter, mergeMap, distinct, toArray, groupBy, reduce } from 'rxjs/
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 class AverageTempAcumpulator{
-  //  const averageTempSum: number;
-  //  const readingsCount: number;
 
-    constructor(private averageTempSum: number, private readingsCount: number){
-
-    }
+    constructor(private averageTempSum: number, private readingsCount: number){}
 
     public reduce(value: AverageTempData) : AverageTempAcumpulator{
         if (value.datatype == "TMAX") {
@@ -24,8 +20,28 @@ class AverageTempAcumpulator{
         }
         return this.averageTempSum / this.readingsCount;
     }
+}
 
-    
+const averageTempCmp = function(at1: (string | number) [], at2: (string | number) []) : number {
+    if (at1[1] < at2[1]) {
+        return 1;
+    } else if (at1[1] > at2[1]){
+        return -1;
+    }
+    return 0;
+}
+
+export const hotestYears = function(numRows: number, allYears: Observable<(string | number) [][]>) : Observable<(string | number) [][]>{
+    return allYears.pipe(
+        map(l => {
+            var lcopy = [...l];
+            lcopy.sort(averageTempCmp);
+            if (lcopy.length > numRows){
+                return lcopy.slice(0,numRows);
+            }
+            return lcopy;
+        })
+    )
 }
 
 export const serviceDataToChartData = function(tempDataObsrv: Observable<AverageTempData[]>) : Observable<(string | number) [][]>{
@@ -35,7 +51,13 @@ export const serviceDataToChartData = function(tempDataObsrv: Observable<Average
         groupBy(v => v.date),
         mergeMap(v => reduceByDate(v, v.key)),
         toArray()
-    )
+    );
+}
+
+export const reduceChartDataToTopXHighs = function(chartData: Observable<(string | number) [][]>) : any {
+    return chartData.pipe(
+
+    );
 }
 
 const reduceByDate = (avTempByDate: Observable<AverageTempData>, dateStr: string): Observable<(string | number) []> =>  {

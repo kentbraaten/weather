@@ -13,9 +13,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataViewerComponent } from './data-viewer/data-viewer.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { HotestTempsComponent } from './hotest-temps/hotest-temps.component';
 
 @NgModule({
-  declarations: [LocationComponent, DataViewerComponent],
+  declarations: [LocationComponent, DataViewerComponent, HotestTempsComponent],
   imports: [
     CommonModule,
     StoreModule.forFeature("noaa",reducer),
@@ -28,7 +29,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
   providers: [ {provide: LocationsService, useClass: LocationsService}, AverageTempService],
   exports: [
     LocationComponent,
-    DataViewerComponent
+    DataViewerComponent,
+    HotestTempsComponent
   ]
 })
 export class NoaaModule { }

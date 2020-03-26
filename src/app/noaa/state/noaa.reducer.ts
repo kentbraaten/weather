@@ -52,7 +52,7 @@ export function reducer(state = initialState, action : NoaaActions): NoaaState {
         case NoaaActionTypes.LOAD_AVERAGE_TEMP_PART: {
             return {
                 ...state,
-                averageTempData: state.averageTempData.concat(action.payload)
+                averageTempData: [...state.averageTempData,...action.payload]
             }
         }
 

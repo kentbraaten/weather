@@ -195,7 +195,7 @@ const countriesMap = new Map(
         ["LU", "Luxembourg"],
         ["MD", "Moldova"],
         ["MX", "Mexico"],
-        ["NI", "Niger"],
+        ["NG", "Niger"],
         ["NL", "Netherlands"],
         ["NO", "Norway"],
         ["PK", "Pakistan"],

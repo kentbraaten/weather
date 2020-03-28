@@ -7,8 +7,8 @@ const dataEndpoint="data";
 const dataSetRange = "startdate=2018-01-01&enddate=1900-01-01"
 
 export var cityLocationsFunc = (limit: number) => {
-    return (offset: number ) : string => {
-        const args = `limit=${limit}&offset=${offset}&locationcategoryid=CITY&startdate=2018-01-01&enddate=1900-01-01&datasetid=GSOY`;
+    return (page: number ) : string => {
+        const args = `limit=${limit}&offset=${(page - 1) * limit}&locationcategoryid=CITY&startdate=2018-01-01&enddate=1950-01-01&datasetid=GSOY&datacoverage=1`;
         return `${nooaBaseAddress}${locationEndpoint}?${args}`;
     }
 }

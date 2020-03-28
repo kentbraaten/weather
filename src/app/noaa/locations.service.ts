@@ -13,6 +13,6 @@ export class LocationsService {
 
   getData(): Observable<Location[]> {
     return locationListFromLocationPages((page: number) => 
-          this.http.get<ServiceReturnValue>(urlFunc(1),requestHeader()));
+          this.http.get<ServiceReturnValue>(urlFunc(page),requestHeader()));
   }
 }

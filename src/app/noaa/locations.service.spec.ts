@@ -23,27 +23,4 @@ describe('LocationService', () => {
     expect(service).toBeTruthy();
   });
 
-  var data = [];
-
-  it('should return data', (done) => {
-    const service: LocationsService = TestBed.get(LocationsService);
-    
-    service.getData().subscribe((item) =>
-    {
-      data.push(item);
-    }, 
-      (err) => console.log(err), 
-      () => {
-        expect(data.length).toBe(1);
-        expect(data[0].length).toBeGreaterThan(600);
-        expect(data[0][0].name).toBeTruthy
-        done();
-      })
-});
-/*
-  it('should do stuff', () => {
-    const service: WeatherDataService = TestBed.get(WeatherDataService);
-   // service.getData().subscribe(d => console.log(d));
-  });
-*/
 });

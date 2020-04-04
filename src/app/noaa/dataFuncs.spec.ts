@@ -10,6 +10,7 @@ describe("serviceDataToChartData", () => {
                 next: (data: (string | number) [][]) => {
                     expect(data.length).toEqual(4);
                     expect(data[0][0]).toEqual("2000");
+                    expect(data[1].length).toEqual(2);
                     expect(data[1][0]).toEqual("2001");
                     expect(data[2][0]).toEqual("2002");
                     expect(data[3][0]).toEqual("2003");

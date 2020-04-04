@@ -5,6 +5,7 @@ import { AverageTempData, AverageTempServiceReturnValue, LocationView, DateRange
 import { averageTempDataFunc, requestHeader } from './service-meta-data';
 import {  map, distinct, mergeMap, toArray, take, concatMap, filter } from 'rxjs/operators';
 import { serviceDataToChartData } from './dataFuncs';
+import {averageTempDataListFromPages} from './avergeTempFuncs';
 
 const dateRanges = [
   {startDate: '1890-01-01', endDate: '1899-01-01'},
@@ -30,18 +31,26 @@ export class AverageTempService {
   constructor(private http: HttpClient) { }
   
   getChartData(location: LocationView): Observable<(string | number) [][]> {
-    return interval(251).pipe(
-      take(dateRanges.length),
-      map(idx => getDateRange(idx)),
-      concatMap(range => {
-        //return this.getData(location, range.startDate, range.endDate);
-        if (range.startDate == '0000-00-00'){
-          return from(this.end());
-        } else {
-          return this.getData(location.id, range.startDate, range.endDate)
-        }
-      }),
-    )
+    return averageTempDataListFromPages(this.getHttpLokupFunc(this.http), location)
+  }
+
+  getHttpLokupFunc(http: HttpClient) {
+
+    return (location: string, startDate: string, endDate: string): Observable<AverageTempData[]> =>  {
+      return http.get<AverageTempServiceReturnValue>
+          (averageTempDataFunc(location, startDate, endDate),requestHeader())
+          .pipe(
+            map(results => results.results)
+          )
+    }
+  }
+
+  lookupHttpData(location: string, startDate: string, endDate: string): Observable<AverageTempData[]> {
+    return this.http.get<AverageTempServiceReturnValue>
+        (averageTempDataFunc(location, startDate, endDate),requestHeader())
+        .pipe(
+          map(results => results.results)
+        )
   }
 
   getData(location: string, startDate: string, endDate: string): Observable<(string | number) [][]> {

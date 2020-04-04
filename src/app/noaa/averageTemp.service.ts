@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, interval, from } from 'rxjs';
-import { AverageTempData, AverageTempServiceReturnValue, DateRange } from './noaa.types';
+import { AverageTempData, AverageTempServiceReturnValue, LocationView, DateRange } from './noaa.types';
 import { averageTempDataFunc, requestHeader } from './service-meta-data';
 import {  map, distinct, mergeMap, toArray, take, concatMap, filter } from 'rxjs/operators';
 import { serviceDataToChartData } from './dataFuncs';
@@ -29,7 +29,7 @@ const getDateRange = (idx: number) => dateRanges[idx];
 export class AverageTempService {
   constructor(private http: HttpClient) { }
   
-  getChartData(location: string): Observable<(string | number) [][]> {
+  getChartData(location: LocationView): Observable<(string | number) [][]> {
     return interval(251).pipe(
       take(dateRanges.length),
       map(idx => getDateRange(idx)),
@@ -38,7 +38,7 @@ export class AverageTempService {
         if (range.startDate == '0000-00-00'){
           return from(this.end());
         } else {
-          return this.getData(location, range.startDate, range.endDate)
+          return this.getData(location.id, range.startDate, range.endDate)
         }
       }),
     )

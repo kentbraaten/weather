@@ -45,7 +45,7 @@ export class LocationComponent implements OnInit {
 
   locationSelected(selectedLocation: LocationView) {
     if (selectedLocation){
-      this.store.dispatch(new SelectLocation(selectedLocation.id));
+      this.store.dispatch(new SelectLocation(selectedLocation));
     }
   }
 

@@ -39,12 +39,12 @@ export class SelectStateRegion implements Action {
 
 export class SelectLocation implements Action {
     readonly type = NoaaActionTypes.SELECT_LOCATION;
-    constructor(public payload: string) {}
+    constructor(public payload: LocationView) {}
 }
 
 export class LoadAverageTempData implements Action {
     readonly type = NoaaActionTypes.LOAD_AVERAGE_TEMP_DATA;
-    constructor(public payload: string) {}
+    constructor(public payload: LocationView) {}
 }
 
 export class LoadAverageTempSuccess implements Action {

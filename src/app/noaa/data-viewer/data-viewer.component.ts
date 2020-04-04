@@ -30,9 +30,9 @@ export class DataViewerComponent implements OnInit {
 
   ngOnInit() {
     this.locationSubscription = this.store.select(fromNoaa.locationIdSelector)
-      .subscribe(locId => {
-        if (locId) {
-          this.store.dispatch(new noaaActions.LoadAverageTempData(locId))
+      .subscribe(location => {
+        if (location) {
+          this.store.dispatch(new noaaActions.LoadAverageTempData(location))
         }
       });
 

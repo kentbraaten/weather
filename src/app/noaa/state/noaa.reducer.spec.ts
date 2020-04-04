@@ -1,5 +1,15 @@
 import {initialState, reducer} from "./noaa.reducer";
 import * as locationActions from "./noaa.actions";
+import { LocationView } from "../noaa.types";
+
+const testLocation: LocationView = {
+        mindate: "1893-01-01",
+       maxdate: "2019-11-18",
+       city: "New York",
+       state: "New York",
+       country: "United States",
+        id: "CITY:US530001"
+}
 
 const testActions = [
     {
@@ -89,8 +99,7 @@ describe("LocationReducer", () => {
 
         expect(newState.countryCode).toEqual("Canada");
         expect(newState.stateRgn).toEqual("");
-        expect(newState.locationId).toEqual("");
-        expect(newState.locationId.length).toEqual(0);
+        expect(newState.selectedLocation).toBeNull();
     });
 
     it ("SELECT_STATE_REGION should set the state, region and average temp data", () => {
@@ -112,32 +121,30 @@ describe("LocationReducer", () => {
 
         expect(newState.countryCode).toEqual("US");
         expect(newState.stateRgn).toEqual("Iowa");
-        expect(newState.locationId).toEqual("");
-        expect(newState.locationId.length).toEqual(0);
+        expect(newState.selectedLocation).toBeNull();
     });
 
     it ("SELECT_STATE_REGION should clear location", () => {
         const region = new locationActions.SelectStateRegion("Minnesota");
         const newState = reducer(initialState, region);
-        expect(newState.locationId).toBe("");
+        expect(newState.selectedLocation).toBeNull();
     });
 
-    it ("SELECTION_LOCATION should set a location id", () => {
-        const selectLocation = new locationActions.SelectLocation("CITY:US530001");
+    it ("SELECT_LOCATION should set a location", () => {
+        const selectLocation = new locationActions.SelectLocation(testLocation);
         const intermediateState = {
             ...initialState,
             countryCode: "United States",
-            stateRgn: "New York",
-            locationid: ""
+            stateRgn: "New York"
         }
         const newState = reducer(intermediateState, selectLocation);
-        expect(newState.locationId).toBe("CITY:US530001");
+        expect(newState.selectedLocation.id).toBe("CITY:US530001");
         expect(newState.countryCode).toEqual("United States");
         expect(newState.stateRgn).toEqual("New York");
     });
 
     it ("LOAD_AVERAGE_TEMP_SUCCESS should load average temp data", () => {
-        const selectLocation = new locationActions.SelectLocation("CITY:US530001");
+        const selectLocation = new locationActions.SelectLocation(testLocation);
         const midState = reducer(initialState, selectLocation);
         const loadAverageTempData = new locationActions.LoadAverageTempSuccess(averageTempTestData);
         const newState = reducer(midState, loadAverageTempData);

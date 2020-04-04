@@ -22,7 +22,7 @@ export const getStateRegion = createSelector(getNoaaFeatureState,
     ns => ns.stateRgn);
 
 export const locationIdSelector = createSelector(getNoaaFeatureState,
-    ns => ns.locationId);
+    ns => ns.selectedLocation);
 
 export const averageTempSelector = createSelector(getNoaaFeatureState,
     ns => ns.averageTempData);

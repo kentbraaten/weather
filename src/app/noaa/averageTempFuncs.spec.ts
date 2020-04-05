@@ -6,11 +6,13 @@ import { serviceDataToChartData, hotestYears } from './dataFuncs';
 import * as R from "rambda";
 
 const lookupFunc = (locId: string, startDate: string, endDate: string)=> {
-    const between = (cmpDt: string, startDate: string, endDate: string ) =>
-                        cmpDt.localeCompare(startDate) > 0 && cmpDt.localeCompare(endDate) <= 0;
+    const startNum = parseInt(startDate);
+    const endNum = parseInt(endDate);
+    const between = (cmpNum: number, startDate: string, endDate: string ) => 
+                                         startNum <= cmpNum && cmpNum <= endNum;
     return from(mockData)
     .pipe(
-        filter(avt=> between(avt.date.slice(0,4), startDate, endDate)),
+        filter(avt=> between(parseInt(avt.date.slice(0,4)), startDate, endDate)),
         toArray()
     )  
 }
@@ -18,7 +20,7 @@ const lookupFunc = (locId: string, startDate: string, endDate: string)=> {
 const avTmpPageLookupFunc = R.curry(averageTempDataListFromPages)(lookupFunc);
 
 describe("averageTempDataListFromPages", () => {
-    it("combines several pages", (done)=>{
+    it("combines data from several pages plus a terminating row", (done)=>{
         let values = [];
         avTmpPageLookupFunc(mockLocation)
         .subscribe(
@@ -26,7 +28,7 @@ describe("averageTempDataListFromPages", () => {
                 next: (avtl) => values = [...values, ...avtl],
                 error: (e) => console.log(e),
                 complete: () => {
-                    expect(9).toEqual(values.length);
+                    expect(10).toEqual(values.length);
                     done();
                 }
             }
@@ -60,8 +62,23 @@ describe("averageTempDataListFromPages", () => {
                     done();
                 }
             })
-      
-    })
+    });
+
+    it("Pages do not overlap", (done)=> {
+        let values = [];
+        avTmpPageLookupFunc(mockShortedRanges)
+        .subscribe(
+            {
+                next: (avtl) => values = [...values, ...avtl],
+                error: (e) => console.log(e),
+                complete: () => {
+                    const years = new Set();
+                    values.forEach(v => years.add(v[0]));
+                    expect(years.size).toEqual(values.length);
+                    done();
+                }
+            })
+    });
 });
 
 const mockLocation: LocationView = {

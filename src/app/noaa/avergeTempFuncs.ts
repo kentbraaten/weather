@@ -34,7 +34,7 @@ export function averageTempDataListFromPages(
         if (start >= end){
             return [...accum, {startDate: "0000-00-00", endDate: "0000-00-00"}];
         }
-        const pageEnd = start + 10 <= end ? start + 10 : end;
+        const pageEnd = start + 9 <= end ? start + 9 : end;
         return createDateRangeArray([...accum, {startDate: `${start}-01-01`, endDate: `${pageEnd}-01-01`}],
                 start + 10, end);
     }

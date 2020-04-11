@@ -12,7 +12,7 @@ export const getLocationsSelector = createSelector(getNoaaFeatureState,
     ns => ns.locations);
 
 export const getChartNameSelector = createSelector(getNoaaFeatureState,
-    ns => ns.selectedLocation.state != null ?
+    ns => ns.selectedLocation == null ? "" : ns.selectedLocation.state != null ?
             `Average High Temp for ${ns.selectedLocation.city}, ${ns.selectedLocation.state}, ${ns.selectedLocation.country}`
            :  `Average High Temp for ${ns.selectedLocation.city}, ${ns.selectedLocation.country}`
     );

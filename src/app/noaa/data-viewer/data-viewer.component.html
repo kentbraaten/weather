@@ -1,8 +1,8 @@
-<div *ngIf="dataAvailable$ | async; else notShow">
+<div *ngIf="showChart; else notShow">
   <google-chart 
     [type]="chartType"
-    [title]="chartName$ | async"
-    [data]="averageTempData$ | async"
+    [title]="chartName"
+    [data]="averageTempData"
     [columnNames]="columnNames"
     [options]="chartOptions">
   </google-chart>

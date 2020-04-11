@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromNoaa from '../state/index';
 import * as noaaActions from '../state/noaa.actions';
@@ -11,19 +11,19 @@ import { filter, mergeMap, map, toArray } from 'rxjs/operators';
   styleUrls: ['./data-viewer.component.css']
 })
 export class DataViewerComponent implements OnInit {
+  @Input() chartName: string;
+  @Input() averageTempData: (string | number)[][];
+  @Input() showChart: boolean;
 
   constructor(private store: Store<fromNoaa.State>) { }
   private locationSubscription: Subscription;
-  private averageTempData$: Observable<any>;
+  
   columnNames = [];
-  dataAvailable$: Observable<boolean>;
-  chartName$: Observable<string>;
   chartType = "LineChart";
-  chartName = "Average Temperture";
   chartOptions = {
     chart: {
-      title: 'Box Office Earnings in First Two Weeks of Opening',
-      subtitle: 'in millions of dollars (USD)'
+      title: 'Average High Temputure',
+      subtitle: 'In Farenheit'
     },
     width: 1100,
     height: 500
@@ -36,10 +36,7 @@ export class DataViewerComponent implements OnInit {
           this.store.dispatch(new noaaActions.LoadAverageTempData(location))
         }
       });
-
-      this.dataAvailable$ = this.store.select(fromNoaa.averageTempDataAvailableSelector);
-      this.averageTempData$ = this.store.select(fromNoaa.averageTempSelector);
-      this.chartName$ = this.store.select(fromNoaa.getChartNameSelector);
+      
       this.columnNames = this.getChartColumnNames();
   }
 
@@ -50,6 +47,4 @@ export class DataViewerComponent implements OnInit {
   private getChartColumnNames() {
     return ['Year', 'Average High']
   }
-
-
 }

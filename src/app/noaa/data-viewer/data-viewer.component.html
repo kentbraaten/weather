@@ -1,7 +1,7 @@
 <div *ngIf="dataAvailable$ | async; else notShow">
   <google-chart 
     [type]="chartType"
-    [title]="chartName"
+    [title]="chartName$ | async"
     [data]="averageTempData$ | async"
     [columnNames]="columnNames"
     [options]="chartOptions">

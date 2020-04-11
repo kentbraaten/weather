@@ -17,6 +17,7 @@ export class DataViewerComponent implements OnInit {
   private averageTempData$: Observable<any>;
   columnNames = [];
   dataAvailable$: Observable<boolean>;
+  chartName$: Observable<string>;
   chartType = "LineChart";
   chartName = "Average Temperture";
   chartOptions = {
@@ -38,6 +39,7 @@ export class DataViewerComponent implements OnInit {
 
       this.dataAvailable$ = this.store.select(fromNoaa.averageTempDataAvailableSelector);
       this.averageTempData$ = this.store.select(fromNoaa.averageTempSelector);
+      this.chartName$ = this.store.select(fromNoaa.getChartNameSelector);
       this.columnNames = this.getChartColumnNames();
   }
 

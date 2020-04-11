@@ -11,6 +11,12 @@ export const getNoaaFeatureState = createFeatureSelector<fromNoaa.NoaaState>("no
 export const getLocationsSelector = createSelector(getNoaaFeatureState,
     ns => ns.locations);
 
+export const getChartNameSelector = createSelector(getNoaaFeatureState,
+    ns => ns.selectedLocation.state != null ?
+            `Average High Temp for ${ns.selectedLocation.city}, ${ns.selectedLocation.state}, ${ns.selectedLocation.country}`
+           :  `Average High Temp for ${ns.selectedLocation.city}, ${ns.selectedLocation.country}`
+    );
+
 export const getCountrySelector = createSelector(getNoaaFeatureState,
     ns => ns.countryCode);
 

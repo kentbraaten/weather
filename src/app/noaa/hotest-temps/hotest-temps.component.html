@@ -1,5 +1,12 @@
-<div>
-    <ul *ngFor="let row of hotestYears$ | async">
-        <li>{{row[0]}} - {{row[1]}}</li>
-    </ul>
+<div *ngIf="dataAvailable$ | async; else notShow">
+    <table>
+        <tr>
+            <th>Year</th>
+            <th>Average Temp</th>
+        </tr>
+        <tr *ngFor="let row of hotestYears$ | async">
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+    </table>
 </div>

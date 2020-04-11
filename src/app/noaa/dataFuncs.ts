@@ -18,7 +18,7 @@ class AverageTempAcumpulator{
         if (this.readingsCount == 0){
             return 0;
         }
-        return this.averageTempSum / this.readingsCount;
+        return parseFloat((this.averageTempSum / this.readingsCount).toFixed(2))
     }
 }
 

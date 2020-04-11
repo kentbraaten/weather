@@ -11,10 +11,12 @@ import {hotestYears} from '../dataFuncs';
 })
 export class HotestTempsComponent implements OnInit {
   private hotestYears$ : Observable<(string|number)[][]>
+  private dataAvailable$: Observable<boolean>;
   constructor(private store: Store<fromNoaa.State>) { }
 
   ngOnInit() {
     this.hotestYears$ = hotestYears(5, this.store.select(fromNoaa.averageTempSelector));
+    this.dataAvailable$ = this.store.select(fromNoaa.averageTempDataAvailableSelector);
   }
 
 }

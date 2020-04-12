@@ -23,7 +23,7 @@ describe("serviceDataToChartData", () => {
         serviceDataToChartData(of(averageTempData))
             .subscribe({
                 next: (data: (string | number)[][]) => {
-                    expect(data[0][1]).toBe(31.666666666666668);
+                    expect(data[0][1]).toBe(31.67);
                     done();
                 }
             }

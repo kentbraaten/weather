@@ -1,26 +1,31 @@
-<div>
-<ng-select class="custom" [items]="countries$ | async"  
-        bindLabel="country"
-        (change)="selectCountry($event)"   
-    > 
-</ng-select>
-</div>
-
-<div>
-<ng-select class="custom" [items]="stateRgns$ | async"  
-        bindLabel="state"
-        bindValue="stateRegbind"
-        (change)="selectState($event)"
-        #stateSelect
-    > 
-</ng-select>
-</div>
-
-<div>
-<ng-select class="custom" [items]="cityLocations$ | async"
-               bindLabel="city"
-               (change)="locationSelected($event)"
-               #citySelect
-    > 
-</ng-select>
+<div class="location-container">
+    <div class="location-selections">
+        <label>Country</label>
+        <ng-select class="custom" [items]="countries$ | async"  
+                bindLabel="country"
+                (change)="selectCountry($event)"   
+            > 
+        </ng-select>
+    </div>
+       
+    <div class="location-selections" *ngIf="(stateRgns$ | async).length > 1">
+        <label>State/Provence</label>
+        <ng-select class="custom" [items]="stateRgns$ | async"  
+                bindLabel="state"
+                bindValue="stateRegbind"
+                (change)="selectState($event)"
+                #stateSelect
+            > 
+        </ng-select>
+    </div>
+        
+    <div clas="location-selections">
+        <label>City</label>
+        <ng-select class="custom" [items]="cityLocations$ | async"
+                       bindLabel="city"
+                       (change)="locationSelected($event)"
+                       #citySelect
+            > 
+        </ng-select>
+    </div>
 </div>

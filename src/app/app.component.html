@@ -5,13 +5,15 @@
 
   <mat-sidenav-content>
     <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>
-    <app-data-viewer 
+    <div class="data-view">
+      <app-data-viewer 
         [chartName]="chartName$ | async"
         [averageTempData]="averageTempData$ | async"
         [showChart]="dataAvailable$ | async"
-    >
-    </app-data-viewer>
-    <app-hotest-temps></app-hotest-temps>
+      >
+      </app-data-viewer>
+      <app-hotest-temps></app-hotest-temps>
+    </div>
     <div *ngIf="waiting$ | async">
       <mat-spinner></mat-spinner>
     </div>

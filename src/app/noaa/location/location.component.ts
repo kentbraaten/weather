@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Observable, from, forkJoin, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, mergeMap, switchMap, map, toArray, tap } from 'rxjs/operators'
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { LoadLocations, SelectCountry, SelectLocation, SelectStateRegion } from '../state/noaa.actions';
 import * as fromNoaa from '../state/index';

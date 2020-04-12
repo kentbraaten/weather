@@ -8,3 +8,12 @@
   min-height: 0px;
   border-radius: 0;
 }
+
+.location-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.location-selections {
+  margin-bottom: 25px;
+}

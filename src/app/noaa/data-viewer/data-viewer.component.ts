@@ -24,9 +24,7 @@ export class DataViewerComponent implements OnInit {
     chart: {
       title: 'Average High Temputure',
       subtitle: 'In Farenheit'
-    },
-    width: 1100,
-    height: 500
+    }
   };
 
   ngOnInit() {
